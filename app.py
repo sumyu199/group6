@@ -17,7 +17,7 @@ st.markdown("""
 **Visually** show data on a stock!Date range from 2018, 1, 1 to  today
  """)
 
-image = Image.open("/Users/ngsumyu/PycharmProjects/webapp/image1.png")
+image = Image.open("/Users/ngsumyu/Desktop/Group6/group6/image1.png")
 st.image(image,use_column_width=True)
 
 
