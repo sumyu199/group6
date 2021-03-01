@@ -291,7 +291,7 @@ for i in indicators:
     return data
 
  MACD(data,period_long = 26,period_short = 12 ,period_signal = 9, column = 'Close')
- data = data.astype(float)
+ 
 
 
 #buy signal and sell signal
