@@ -304,10 +304,6 @@ for i in indicators:
      fig = go.Figure()
 
      # Add traces
-     fig.add_trace(go.Scatter(x=data["Date"], y=data['RSI_SMA'],
-                              mode='lines',
-                              name='RSI_SMA',
-                              line=dict(color='Blue')))
      fig.add_trace(go.Scatter(x=data['Date'], y=data['Close'],
                               mode='lines',
                               name='Close Price',
