@@ -300,20 +300,22 @@ for i in indicators:
       flag = -1
       for i in range(0, len(Signal)):
           if data[MACD][i] > data[Signal][i]:
-              Buysignal.append(np.nan)
  #bullish signal
               if flag != 1:
                   Buysignal.append((data['Close'])[i])
+                  Sellsignal.append(np.nan)
                   flag = 1
               else:
                   Buysignal.append(np.nan)
+                  Sellsignal.append(np.nan)
           elif data[MACD][i] < data[Signal][i]:
-              Buysignal.append(np.nan)
  #bearish signal
               if flag != 0:
                   Sellsignal.append((data['Close'])[i])
+                  Buysignal.append(np.nan)
                   flag = 0
               else:
+                  Buysignal.append(np.nan)
                   Sellsignal.append(np.nan)
           else:
               Buysignal.append(np.nan)
