@@ -298,7 +298,7 @@ for i in indicators:
       Buysignal = []
       Sellsignal = []
       flag = -1
-      for i in range(0, len(data)):
+      for i in range(0, len(Signal)):
           if data[MACD][i] > data[Signal][i]:
               Buysignal.append(np.nan)
  #bullish signal
