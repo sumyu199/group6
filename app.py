@@ -291,6 +291,7 @@ for i in indicators:
     return data
 
  MACD(data,period_long = 26,period_short = 12 ,period_signal = 9, column = 'Close')
+ data = data.astype(float)
 
 
 #buy signal and sell signal
@@ -298,7 +299,7 @@ for i in indicators:
       Buysignal = []
       Sellsignal = []
       flag = -1
-      for i in range(0, len(Signal)):
+      for i in range(0, len(data)):
           if data[MACD][i] > data[Signal][i]:
  #bullish signal
               if flag != 1:
