@@ -22,6 +22,7 @@ st.image(image,use_column_width=True)
 
 
 st.header("""User Guide """)
+st.write("On-balance volume is not usable for forex due to the absent of volume")
 #create a sidebar header
 st.sidebar.header('User Input Parameter')
 
