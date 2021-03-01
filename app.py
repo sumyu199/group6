@@ -285,44 +285,37 @@ for i in indicators:
      st.plotly_chart(fig)
 
 
-
-     fig = go.Figure()
-     fig.add_trace(go.Scatter(x=data["Date"], y=data['RSI_SMA'],
-                              mode='lines',
-                              name='RSI_SMA',
-                              line=dict(color='Blue')))
-     fig.update_layout(
-         autosize=False,
-         width=800,
-         height=600)
-     fig.add_hline(y = 75,line_dash="dot",annotation_text="75 RSI",
-              annotation_position="bottom right")
-     fig.add_hline(y = 25,line_dash="dot",annotation_text="25 RSI",
-              annotation_position="bottom right")
-     st.header(f"Relative Strength Index\n {company_name}")
-     st.plotly_chart(fig)
-     fig = go.Figure()
+     fig = make_subplots(rows=2, cols=1)
 
      # Add traces
      fig.add_trace(go.Scatter(x=data['Date'], y=data['Close'],
                               mode='lines',
                               name='Close Price',
                               line=dict(
-                                  color='LightSkyBlue')))
+                                  color='LightSkyBlue')),row = 1,col = 1)
      fig.add_trace(go.Scatter(x=data['Date'], y=data['BB_Buy_Signal_Price'],
                               mode='markers',
                               marker_symbol='triangle-up',
                               name='Buy',
                               marker=dict(
                                   color='green',
-                                  opacity=1)))
+                                  opacity=1)),row = 1,col = 1)
      fig.add_trace(go.Scatter(x=data['Date'], y=data['BB_Sell_Signal_Price'],
                               mode='markers',
                               marker_symbol='triangle-down',
                               name='Sell',
                               marker=dict(
                                   color='red',
-                                  opacity=1)))
+                                  opacity=1)), row = 1,col = 1)
+     fig.add_trace(go.Scatter(x=data["Date"], y=data['RSI_SMA'],
+                              mode='lines',
+                              name='RSI_SMA',
+                              line=dict(color='Blue')),row = 2,col = 1)
+     fig.add_hline(y = 75,line_dash="dot",annotation_text="75 RSI",
+                   annotation_position="bottom right")
+     fig.add_hline(y = 25,line_dash="dot",annotation_text="25 RSI",
+              annotation_position="bottom right")
+
      fig.update_layout(
          autosize=False,
          width=800,
@@ -432,10 +425,8 @@ for i in indicators:
                     marker=dict(
                              color='red',
                              opacity=1)))
-     fig.update_layout(
-      autosize=False,
-      width=800,
-      height=600)
+     fig.update_xaxes(title_text='Date', row=2, col=1)
+     fig.update_yaxes(title_text='Value')
      st.header(f"MACD Signal\n {company_name}")
      st.plotly_chart(fig)
      st.write("If MACD is **above signal line with bullish signal**,Then we are going to look place a **BUY TRADE**. ")
