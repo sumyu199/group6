@@ -284,7 +284,7 @@ for i in indicators:
      st.header(f"Bollinger bands\n {company_name}")
      st.plotly_chart(fig)
 
-
+     fig = go.Figure()
      # Add traces
      fig.add_trace(go.Scatter(x=data['Date'], y=data['Close'],
                               mode='lines',
