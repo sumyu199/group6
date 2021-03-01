@@ -285,25 +285,6 @@ for i in indicators:
      st.plotly_chart(fig)
 
 
-
-     fig = go.Figure()
-     fig.add_trace(go.Scatter(x=data["Date"], y=data['RSI_SMA'],
-                              mode='lines',
-                              name='RSI_SMA',
-                              line=dict(color='Blue')))
-     fig.update_layout(
-         autosize=False,
-         width=800,
-         height=600)
-     fig.add_hline(y = 75,line_dash="dot",annotation_text="75 RSI",
-              annotation_position="bottom right")
-     fig.add_hline(y = 25,line_dash="dot",annotation_text="25 RSI",
-              annotation_position="bottom right")
-     st.header(f"Relative Strength Index\n {company_name}")
-     st.plotly_chart(fig)
-     
-     fig = go.Figure()
-
      # Add traces
      fig.add_trace(go.Scatter(x=data['Date'], y=data['Close'],
                               mode='lines',
@@ -328,8 +309,25 @@ for i in indicators:
          autosize=False,
          width=800,
          height=600)
-     st.header(f"Bollinger Band Signal with RSI\n {company_name}")
+     st.header(f"Bollinger Band Signal\n {company_name}")
      st.plotly_chart(fig)
+     fig = go.Figure()
+     fig.add_trace(go.Scatter(x=data["Date"], y=data['RSI_SMA'],
+                              mode='lines',
+                              name='RSI_SMA',
+                              line=dict(color='Blue')))
+     fig.update_layout(
+         autosize=False,
+         width=800,
+         height=600)
+     fig.add_hline(y = 75,line_dash="dot",annotation_text="75 RSI",
+              annotation_position="bottom right")
+     fig.add_hline(y = 25,line_dash="dot",annotation_text="25 RSI",
+              annotation_position="bottom right")
+     st.header(f"Relative Strength Index\n {company_name}")
+     st.plotly_chart(fig)
+
+     fig = go.Figure()
      st.write("If price close outside of the upper Bollinger Band,Then we are going to look place a **SELL TRADE**.")
      st.write("If looking to sell,wait for **RSI > 75** Before entering")
      st.write("If price close outside of the lower Bollinger Band,Then we are going to look place a **BUY TRADE**.")
