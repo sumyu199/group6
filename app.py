@@ -291,41 +291,40 @@ for i in indicators:
     return data
 
  MACD(data,period_long = 26,period_short = 12 ,period_signal = 9, column = 'Close')
- MACD = data['MACD']
- Signal = data['Signal_Line']
 
-# Create  function to signal when to buy and sell;
+
+#buy signal and sell signal
  def buy_sell(data, MACD, Signal):
-      Buy = []
-      Sell = []
-    # show whether the trend rise or drop after the cross
+      Buysignal = []
+      Sellsignal = []
       flag = -1
-
-      for i in range(0, len(Signal)):
-          if MACD[i] > Signal[i]:
-              Sell.append(np.nan)
+      for i in range(0, len(data)):
+          if data[MACD][i] > data[Signal][i]:
+              Buysignal.append(np.nan)
+ #bullish signal
               if flag != 1:
-                  Buy.append((data['Close'])[i])
+                  Buysignal.append((data['Close'])[i])
                   flag = 1
               else:
-                  Buy.append(np.nan)
-          elif MACD[i] < Signal[i]:
-              Buy.append(np.nan)
+                  Buysignal.append(np.nan)
+          elif data[MACD][i] < data[Signal][i]:
+              Buysignal.append(np.nan)
+ #bearish signal
               if flag != 0:
-                  Sell.append((data['Close'])[i])
+                  Sellsignal.append((data['Close'])[i])
                   flag = 0
               else:
-                  Sell.append(np.nan)
+                  Sellsignal.append(np.nan)
           else:
-              Buy.append(np.nan)
-              Sell.append(np.nan)
-      return (Buy, Sell)
+              Buysignal.append(np.nan)
+              Sellsignal.append(np.nan)
+      return (Buysignal, Sellsignal)
 
 
- a = buy_sell(data, MACD, Signal)
+ a = buy_sell(data, 'MACD', 'Signal_Line')
 
- data['Buy_Signal_Price'] = a[0]
- data['Sell_Signal_Price'] = a[1]
+ data['MACD_Buy_Signal_Price'] = a[0]
+ data['MACD_Sell_Signal_Price'] = a[1]
 
  if i =='MACD':
     fig = go.Figure()
@@ -356,14 +355,14 @@ for i in indicators:
                     name='Close Price',
                     line = dict(
                         color = 'LightSkyBlue')))
-    fig.add_trace(go.Scatter(x= data['Date'], y=data['Buy_Signal_Price'],
+    fig.add_trace(go.Scatter(x= data['Date'], y=data['MACD_Buy_Signal_Price'],
                     mode='markers',
                     marker_symbol = 'triangle-up',
                     name='Buy',
                     marker = dict(
                         color = 'green',
                         opacity=1)))
-    fig.add_trace(go.Scatter(x= data['Date'], y=data['Sell_Signal_Price'],
+    fig.add_trace(go.Scatter(x= data['Date'], y=data['MACD_Sell_Signal_Price'],
                     mode='markers',
                     marker_symbol = 'triangle-down',
                     name='Sell',
@@ -374,8 +373,10 @@ for i in indicators:
       autosize=False,
       width=800,
       height=600)
-    st.header(f"Signal\n {company_name}")
+    st.header(f"MACD Signal\n {company_name}")
     st.plotly_chart(fig)
+    st.write("If MACD is above signal line with bullish signal,Then we are going to look place a **BUY TRADE**. ")
+    st.write("If MACD is above signal line with bullish signal,Then we are going to look place a **SELL TRADE**. ")
 
 #on-balance volume
  if i == 'OBV':
@@ -390,6 +391,30 @@ for i in indicators:
              OBV.append(OBV[-1])
      data['OBV'] = OBV
      data['OBV_EMA'] = EMA(data,20, column ='OBV')
+#buy signal and sell signal
+     def buy_sell(signal,OBV,OBV_EMA):
+         Buysignal = []
+         Sellsignal = []
+         flag = -1
+         for i in range(0,len(signal)):
+             if signal[OBV][i] > signal[OBV_EMA][i] and flag !=1:
+                 Buysignal.append(signal['Close'][i])
+                 Sellsignal.append(np.nan)
+                 flag = 1
+             elif signal[OBV] < signal[OBV_EMA][i] and flag !=0:
+                 Sellsignal.append(signal['Close'][i])
+                 Buysignal.append(np.nan)
+                 flag = 0
+             else:
+                 Sellsignal.append(np.nan)
+                 Buysignal.append(np.nan)
+         return(Buysignal,Sellsignal)
+
+
+     x = buy_sell(data, 'OBV', 'OBV_EMA')
+
+     data['OBV_Buy_Signal_Price'] = x[0]
+     data['OBV_Sell_Signal_Price'] = x[1]
      fig = make_subplots(rows=2, cols=1)
      fig.add_trace(go.Candlestick(x=data["Date"],
                                   name = 'CandleStick',
@@ -415,6 +440,35 @@ for i in indicators:
      fig.update_yaxes(title_text='Value')
      st.header(f"Daily Candlestick Chart with OBV\n {company_name}")
      st.plotly_chart(fig)
+     fig = go.Figure()
 
+     # Add traces
+     fig.add_trace(go.Scatter(x=data['Date'], y=data['Close'],
+                              mode='lines',
+                              name='Close Price',
+                              line=dict(
+                                  color='LightSkyBlue')))
+     fig.add_trace(go.Scatter(x=data['Date'], y=data['OBV_Buy_Signal_Price'],
+                              mode='markers',
+                              marker_symbol='triangle-up',
+                              name='Buy',
+                              marker=dict(
+                                  color='green',
+                                  opacity=1)))
+     fig.add_trace(go.Scatter(x=data['Date'], y=data['OBV_Sell_Signal_Price'],
+                              mode='markers',
+                              marker_symbol='triangle-down',
+                              name='Sell',
+                              marker=dict(
+                                  color='red',
+                                  opacity=1)))
+     fig.update_layout(
+         autosize=False,
+         width=800,
+         height=600)
+     st.header(f"OBV Signal\n {company_name}")
+     st.plotly_chart(fig)
+     st.write('If **OBV > OBV_EMA**,Then we are going to look place a **BUY TRADE**.')
+     st.write('If **OBV < OBV_EMA**,Then we are going to look place a **SELL TRADE**.')
 
 
