@@ -389,6 +389,7 @@ for i in indicators:
          else:
              OBV.append(OBV[-1])
      data['OBV'] = OBV
+     data['OBV_EMA'] = EMA(data,20, column ='OBV')
      fig = make_subplots(rows=2, cols=1)
      fig.add_trace(go.Candlestick(x=data["Date"],
                                   name = 'CandleStick',
@@ -400,8 +401,12 @@ for i in indicators:
                               mode='lines',
                               name='OBV',
                               line=dict(
-                                  color='Blue')), row=2, col=1)
-
+                                 color='Blue')), row=2, col=1)
+     fig.add_trace(go.Scatter(x= data["Date"], y=data['OBV_EMA'],
+                              mode='lines',
+                              name='OBV_EMA',
+                              line=dict(
+                                 color='orange')), row=2, col=1)
      fig.update_layout(autosize=False,
                        width=800,
                        height=600,
