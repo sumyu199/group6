@@ -291,7 +291,7 @@ for i in indicators:
     return data
 
  MACD(data,period_long = 26,period_short = 12 ,period_signal = 9, column = 'Close')
- 
+
 
 
 #buy signal and sell signal
@@ -378,8 +378,8 @@ for i in indicators:
       height=600)
     st.header(f"MACD Signal\n {company_name}")
     st.plotly_chart(fig)
-    st.write("If MACD is above signal line with bullish signal,Then we are going to look place a **BUY TRADE**. ")
-    st.write("If MACD is above signal line with bullish signal,Then we are going to look place a **SELL TRADE**. ")
+    st.write("If MACD is **above signal line with bullish signal**,Then we are going to look place a **BUY TRADE**. ")
+    st.write("If MACD is **above signal line with bullish signal**,Then we are going to look place a **SELL TRADE**. ")
 
 #on-balance volume
  if i == 'OBV':
@@ -404,7 +404,7 @@ for i in indicators:
                  Buysignal.append(signal['Close'][i])
                  Sellsignal.append(np.nan)
                  flag = 1
-             elif signal[OBV] < signal[OBV_EMA][i] and flag !=0:
+             elif signal[OBV][i] < signal[OBV_EMA][i] and flag !=0:
                  Sellsignal.append(signal['Close'][i])
                  Buysignal.append(np.nan)
                  flag = 0
